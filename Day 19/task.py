@@ -1,35 +1,35 @@
-import turtle as turtle_module
+from turtle import Turtle, Screen
 import random
 
-turtle_module.colormode(255)
-tim = turtle_module.Turtle()
-tim.speed("fastest")
-tim.penup()
-tim.hideturtle()
-color_list = [(202, 164, 109), (238, 240, 245), (150, 75, 49), (223, 201, 135), (52, 93, 124), (172, 154, 40), (140, 30, 19), (133, 163, 185), (198, 91, 71), (46, 122, 86), (72, 43, 35), (145, 178, 148), (13, 99, 71), (233, 175, 164), (161, 142, 158), (105, 74, 77), (55, 46, 50), (183, 205, 171), (36, 60, 74), (18, 86, 90), (81, 148, 129), (148, 17, 20), (14, 70, 64), (30, 68, 100), (107, 127, 153), (174, 94, 97), (176, 192, 209)]
-tim.setheading(225)
-tim.forward(300)
-tim.setheading(0)
-number_of_dots = 100
+is_race_on = False
+screen = Screen()
+screen.setup(width=500, height=400)
+user_bet = screen.textinput(title="Make your bet", prompt="Which turtle will win the race? Enter a color: ")
+colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+y_positions = [-70, -40, -10, 20, 50, 80]
+all_turtles = []
 
-for dot_count in range(1, number_of_dots + 1):
-    tim.dot(20, random.choice(color_list))
-    tim.forward(50)
+for turtle_index in range(6):
+  new_turtle = Turtle(shape="turtle")
+  new_turtle.penup()
+  new_turtle.color(colors[turtle_index])
+  new_turtle.goto(x=-230, y=y_positions[turtle_index])
+  all_turtles.append(new_turtle)
 
-    if dot_count % 10 == 0:
-        tim.setheading(90)
-        tim.forward(50)
-        tim.setheading(180)
-        tim.forward(500)
-        tim.setheading(0)
+if user_bet:
+  is_race_on = True
 
+while is_race_on:
+  for turtle in all_turtles:
+    if turtle.xcor() > 230:
+      is_race_on = False
+      winning_color = turtle.pencolor()
+      if winning_color == user_bet:
+        print(f"You've won! The {winning_color} turtle is the winner!")
+      else:
+        print(f"You've lost! The {winning_color} turtle is the winner!")
+    
+    rand_distance = random.randint(0, 10)
+    turtle.forward(rand_distance)
 
-
-
-
-
-
-
-
-screen = turtle_module.Screen()
 screen.exitonclick()
